@@ -1,0 +1,11 @@
+Ryan Hofmann
+
+7. MW and M31 have 2 close encounters before they merge. MW and M33 have 5, as do M31 and M33.
+
+8. MW and M31 approach, pass through each other, come back, their cores swing outward briefly, and then they merge. MW and M33 similarly approach, but rather than merging, M33 enters an eccentric orbit. As a satellite galaxy of M31, M33 simply orbits M31 in an eccentric, decaying orbit.
+
+   The velocities vary similarly to the distances, except inverted. Once MW and M31 merge, their relative velocity goes to zero. Because M33 is both orbiting M31 and approaching MW, both motions contribute to its relative velocity with MW.
+
+9. MW and M31 merge at roughly 6200 Myr. They merge because initially, they are heading almost directly toward each other, and when they pass through each other, a combination of drag and exchange of angular momentum slows the galaxies down. M33 does not merge with the others because it has sufficient angular momentum to avoid them.
+
+10. One stream of stars approximately follows the late part of the orbit. The final position computed for the COM appears to coincide with the centroid of stars.

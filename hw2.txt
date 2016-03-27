@@ -1,0 +1,23 @@
+Ryan Hofmann
+
+1. Sample output: $ python hw2.py MW_000.txt 1
+The Mass of all particles of Type 1 in Galaxy MW is 1.975 x 10^12 Msun
+The total number of particles of Type 1 in Galaxy MW is 50000
+
+2.      M1     N1     M2     N2      M3     N3     M
+   MW   1.975  50000  0.075  75000   0.010  10000  2.060
+   M31  1.921  50000  0.120  120000  0.019  19000  2.060
+   M33  0.187  5000   0.009  9300    0.000  0      0.196
+   Masses in units of 10^12 Msun
+
+3. M31.M1 / MW.M1 = 0.973
+
+4. MW.M + M31.M + M33.M = 4.316 x 10^12 Msun; MW.M1 and M31.M1 dominate
+
+5. (M31.M2 + M31.M3) / (MW.M2 + MW.M3) = 1.635
+
+6. M31.M1 / M33.M1 = 10.273
+
+7. (M31.M2 + M31.M3) / M33.M2 = 15.444; stellar mass ratio is larger
+
+8. fB = 1 - M1 / M: MW.fB = 0.041, M31.fB = 0.067, M33.fB = 0.046; fB for the Universe is several times larger than fB for galaxies; the IGM is filled with both a haze of hot gas and large clumps of cold gas, and galaxies form where dark matter has already accumulated.

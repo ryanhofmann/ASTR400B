@@ -1,0 +1,5 @@
+Ryan Hofmann
+
+3. M(r) = M(1 - a(2r + a)/(r + a)^2). See photo.
+
+4. Using M = M(300) and M(r = 30), a ~ 46 kpc for both galaxies, but the function is too high inside and far too low outside; this is because using M = M(300) ignores the mass outside 300 kpc. Considering the full halo gives a ~ 61 kpc.
