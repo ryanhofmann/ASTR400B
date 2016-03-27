@@ -1,2 +1,2 @@
 # ASTR400B
-project code
+Homework
