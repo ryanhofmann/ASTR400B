@@ -19,6 +19,7 @@ def HernquistAccel(M, r_a, x, j): # Msun, kpc, j=1,2,3
   # Return result
   return a_j
 
+
 # Define Miyamoto-Nagai acceleration function (disk)
 def MiyamotoNagaiAccel(M, r_d, x, j): # Msun, kpc, j=1,2,3
 
@@ -38,6 +39,7 @@ def MiyamotoNagaiAccel(M, r_d, x, j): # Msun, kpc, j=1,2,3
 
   # Return result
   return a_j
+
 
 # Define full acceleration function
 def M31Accel(x): # kpc
@@ -64,6 +66,7 @@ def M31Accel(x): # kpc
   # Return acceleration vector
   return a
 
+
 # Define Hernquist circular speed function
 def HernquistVcirc(M, r_a, x): # M_sun, kpc
 
@@ -78,6 +81,7 @@ def HernquistVcirc(M, r_a, x): # M_sun, kpc
 
   # Return result
   return v_circ
+
 
 # Define Miyamoto-Nagai circular speed function
 def MiyamotoNagaiVcirc(M, r_d, x): # M_sun, kpc
@@ -95,6 +99,7 @@ def MiyamotoNagaiVcirc(M, r_d, x): # M_sun, kpc
 
   # Return result
   return v_circ
+
 
 # Define total circular velocity function
 def M31Vcirc(x): # kpc
@@ -117,5 +122,79 @@ def M31Vcirc(x): # kpc
 
   # Return result
   return v_circ
+
+
+# Define leapfrog integrator function
+def LeapFrog(dt, x, v): # Gyr, kpc, km/s
+
+  # Compute position at 1/2 timestep (kpc)
+  x_mid = x + v*dt/2
+
+  # Compute acceleration at 1/2 timestep ( (km/s)^2 kpc^-1 )
+  a_mid = M31Accel(x_mid)
+
+  # Compute velocity at full timestep (km/s)
+  v_new = v + a_mid*dt
+
+  # Compute position at full timestep (kpc)
+  x_new = x + 0.5*(v + v_new)*dt
+
+  # Return updated position and velocity
+  return x_new, v_new
+
+
+# Define write function for orbit output
+def write(f, t, x, v):
+
+  # Convert numbers to strings, 4 significant digits
+  t_s = '%s' % float('%.4g' % t)
+  x_s = '%s' % float('%.4g' % x[0])
+  y_s = '%s' % float('%.4g' % x[1])
+  z_s = '%s' % float('%.4g' % x[2])
+  vx_s = '%s' % float('%.4g' % v[0])
+  vy_s = '%s' % float('%.4g' % v[1])
+  vz_s = '%s' % float('%.4g' % v[2])
+  string = t_s+'\t'+x_s+'\t'+y_s+'\t'+z_s+'\t'+vx_s+'\t'+vy_s+'\t'+vz_s+'\n'
+  f.write(string)
+
+
+# Define orbit integration function
+def OrbitIntegrator(t_0, dt, t_max): # Gyr
+
+  # Set flag for real or circular
+  real = False
+  if real:
+    # Define initial real values
+    x_M31 = np.array([-378., 611., -285.])
+    x_M33 = np.array([-476., 491., -412.])
+    x = x_M33 - x_M31
+    v_M31 = np.array([74., -72., 49.])
+    v_M33 = np.array([43., 102., 142.])
+    v = v_M33 - v_M31
+  else:
+    # Define initial circular values
+    x = np.array([200., 0., 0.])
+    v = np.array([0., M31Vcirc(x), 0.])
+
+  # Open file for writing
+  f = open("orbits.txt", "w")
+
+  # Write header to file
+  string = "Time\tx\ty\tz\tvx\tvy\tvz\n"
+  f.write(string)
+
+  # Write initial values to file
+  write(f, t_0, x, v)
+
+  # Integrate orbit
+  t = t_0
+  while t < t_max:
+    x, v = LeapFrog(dt, x, v)
+    write(f, t + dt, x, v)
+    print t, x, v
+    t += dt
+
+  # Return final values
+  return t, x, v
 
 
