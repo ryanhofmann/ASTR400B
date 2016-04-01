@@ -197,7 +197,7 @@ def OrbitIntegrator(t_0, dt, t_max, real=1): # Gyr
 def plot(infile='orbits.txt', vel=0):
 
   # Read data from file
-  array = np.genfromtxt(infile, skip_header=1)
+  array = np.genfromtxt("orbits.txt", skip_header=1)
 
   # Define arrays for plotting
   t = array[:,0]
