@@ -2,5 +2,5 @@
 
 python <<Plot
 import plot
-plot.PlotBulge(plane='yz', contours=0)
+plot.PlotBulge(plane='yz', contours=1)
 Plot

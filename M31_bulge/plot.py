@@ -25,7 +25,7 @@ def PlotBulge(infile="M31_000.txt", plane="xy", contours=0, ellipse=0):
 
   # Limit selection to inner 5 kpc
   r = np.sqrt(np.sum(np.square(pos), axis=1))
-  index = np.where(r <= 5.2)
+  index = np.where(r <= 30.)
   core = pos[index]
 
   # Project to specified plane
@@ -47,7 +47,7 @@ def PlotBulge(infile="M31_000.txt", plane="xy", contours=0, ellipse=0):
 
   # Plot disk particles
   from matplotlib.colors import LogNorm
-  plt.hist2d(x1, x2, bins=60, norm=LogNorm())
+  plt.hist2d(x1, x2, bins=300, norm=LogNorm())
   plt.xlabel(x+' (kpc)')
   plt.ylabel(y+' (kpc)')
   plt.colorbar()

@@ -38,13 +38,31 @@ def MiyamotoNagaiAccel(M, r_d, x, j): # Msun, kpc, j=1,2,3
   return a_j
 
 
+# Define dynamical friction function
+def DynamicalFriction(Msat, x, v, j):
+
+  # Define Coulomb logarithm
+  r = np.sqrt(x[0]**2 + x[1]**2 + x[2]**2)
+  bmax = r
+  bmin = G*Msat/(M31Vcirc(x))**2
+  Lambda = bmax/bmin
+
+  # Compute acceleration
+  V = np.sqrt(v[0]**2 + v[1]**2 + v[2]**2)
+  a_j = -0.428*(G*Msat*np.log(Lambda)/r**2)*v[j-1]/V
+
+  # Return result
+  return a_j
+
+
 # Define full acceleration function
-def M31Accel(x): # kpc
+def M31Accel(x, v): # kpc, kpc/Gyr
 
   # Define all component masses (M_sun)
   M_disk = 0.12e12
   M_bulge = 0.019e12
   M_halo = 1.921e12
+  Msat = 0.196e12
 
   # Define all component scale sizes (kpc)
   r_disk = 5.
@@ -59,6 +77,7 @@ def M31Accel(x): # kpc
     a[j-1] += HernquistAccel(M_halo, r_halo, x, j)
     a[j-1] += HernquistAccel(M_bulge, r_bulge, x, j)
     a[j-1] += MiyamotoNagaiAccel(M_disk, r_disk, x, j)
+    a[j-1] += DynamicalFriction(Msat, x, v, j)
 
   # Return acceleration vector
   return a
@@ -122,7 +141,7 @@ def LeapFrog(dt, x, v): # Gyr, kpc, kpc/Gyr
   x_mid = x + v*dt/2
 
   # Compute acceleration at 1/2 timestep (kpc Gyr^-2)
-  a_mid = M31Accel(x_mid)
+  a_mid = M31Accel(x_mid, v)
 
   # Compute velocity at full timestep (kpc/Gyr)
   v_new = v + a_mid*dt
