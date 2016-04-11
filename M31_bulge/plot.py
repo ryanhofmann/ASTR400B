@@ -23,31 +23,27 @@ def PlotBulge(infile="M31_000.txt", plane="xy", contours=0, ellipse=0):
   print com
   pos = bulge[:, 2:5] - com
 
-  # Limit selection to inner 5 kpc
-  r = np.sqrt(np.sum(np.square(pos), axis=1))
-  index = np.where(r <= 30.)
-  core = pos[index]
-
   # Project to specified plane
   if plane == 'xy':
-    x1 = core[:, 0]
-    x2 = core[:, 1]
+    x1 = pos[:, 0]
+    x2 = pos[:, 1]
     x = 'x'
     y = 'y'
   elif plane == 'xz':
-    x1 = core[:, 0]
-    x2 = core[:, 2]
+    x1 = pos[:, 0]
+    x2 = pos[:, 2]
     x = 'x'
     y = 'z'
   else:
-    x1 = core[:, 1]
-    x2 = core[:, 2]
+    x1 = pos[:, 1]
+    x2 = pos[:, 2]
     x = 'y'
     y = 'z'
 
   # Plot disk particles
   from matplotlib.colors import LogNorm
-  plt.hist2d(x1, x2, bins=300, norm=LogNorm())
+  r = 5.
+  plt.hist2d(x1, x2, range=[[-r, r], [-r, r]], bins=100, norm=LogNorm())
   plt.xlabel(x+' (kpc)')
   plt.ylabel(y+' (kpc)')
   plt.colorbar()
@@ -55,12 +51,37 @@ def PlotBulge(infile="M31_000.txt", plane="xy", contours=0, ellipse=0):
   # Overplot contours
   if contours:
     angle = np.linspace(0, 2*np.pi, 100)
-    for r in [0.5, 1.0, 1.5, 2.0, 3.0, 4.0]:
-      a, b = r, r
-      plt.plot(a*np.cos(angle), b*np.sin(angle), linewidth=2.0, color='k')
+    r = np.array([0.5, 1.0, 1.5, 2.0, 3.0, 4.0])
+    if plane == 'xy' and ellipse:
+      e = np.array([0.06, 0.24, 0.28, 0.28, 0.23, 0.18])
+      q = -1*e + 1.
+      print q
+      k = -0.3
+    elif plane == 'xz' and ellipse:
+      e = np.array([0.06, 0.22, 0.28, 0.28, 0.19, 0.18])
+      q = -1*e + 1.
+      print q
+      k = -0.32
+    elif ellipse:
+      e = np.zeros(6)
+      k = 0.
+    for i in range(0, len(r)):
+      if ellipse:
+        a = r[i]/np.sqrt(1. - e[i])
+        b = r[i]*np.sqrt(1. - e[i])
+      else:
+        a, b = r[i], r[i]
+      x1, x2 = a*np.cos(angle), b*np.sin(angle)
+      if ellipse:
+        x1_r = x1*np.cos(k) - x2*np.sin(k)
+        x2_r = x2*np.cos(k) + x1*np.sin(k)
+        x1, x2 = x1_r, x2_r
+      plt.plot(x1, x2, linewidth=2.0, color='k')
 
   # Show plot
   r = 5.0
   plt.axis([-r, r, -r, r])
+  ax = plt.gca()
+  ax.set_axis_bgcolor('black')
   plt.gca().set_aspect('equal', adjustable='box')
   plt.show()
