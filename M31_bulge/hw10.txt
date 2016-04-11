@@ -1,0 +1,5 @@
+Ryan Hofmann
+
+1. Circular contours are a good fit for the yz plane. For xy, best fit is achieved with ellipses where q = [0.94, 0.76, 0.72, 0.72, 0.77, 0.82]. The profile is circular at the center, most eccentric around 2 kpc, and less eccentric further out. Ellipticity (1 - q) = [0.06, 0.24, 0.28, 0.28, 0.23, 0.18].
+
+2. 
