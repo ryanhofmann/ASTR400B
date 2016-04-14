@@ -77,6 +77,9 @@ def PlotBulge(infile="M31_000.txt", plane="xy", contours=0, ellipse=0):
         x2_r = x2*np.cos(k) + x1*np.sin(k)
         x1, x2 = x1_r, x2_r
       plt.plot(x1, x2, linewidth=2.0, color='k')
+    for r in [0.5, 1.0, 1.5, 2.0, 3.0, 4.0]:
+      a, b = r, r
+      plt.plot(a*np.cos(angle), b*np.sin(angle), linewidth=2.0, color='k')
 
   # Show plot
   r = 5.0
