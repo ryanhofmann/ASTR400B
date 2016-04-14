@@ -1,5 +1,7 @@
 Ryan Hofmann
 
-1. Circular contours are a good fit for the yz plane. For xy, best fit is achieved with ellipses where q = [0.94, 0.76, 0.72, 0.72, 0.77, 0.82]. The profile is circular at the center, most eccentric around 2 kpc, and less eccentric further out. Ellipticity (1 - q) = [0.06, 0.24, 0.28, 0.28, 0.23, 0.18].
+1. Circular contours are a good fit for the yz plane. For xy, best fit is achieved with ellipses where q = [0.94, 0.76, 0.72, 0.72, 0.77, 0.82]. The profile is circular at the center, most eccentric around 2 kpc, and less eccentric further out. The bulge appears to be prolate. Ellipticity (1 - q) = [0.06, 0.24, 0.28, 0.28, 0.23, 0.18].
 
-2. 
+2. Mean = [105, 108, 108], sigma = [79.7, 81.4, 81.5]. Dispersion is roughly isotropic. Enclosed mass = 8.72e10 Msun. This is more than 3x the value calculated in homework 5.
+
+As seen in the disk plots, the signature of rotation is asymmetry. This signature is almost entirely absent from the bulge, but there is still a noticable shear in the plots, especially noticeable when blinking between xy and yx. Thus, the bulge is rotating, but only very slightly.
