@@ -11,14 +11,19 @@ from disk import AngMomShift
 # Define function for plotting disk over range of snaps
 def DiskRange(galaxy, first, last, rmax=50, axes='xy'):
 
-  print galaxy, first, last
+  print galaxy, first, last, axes
 
   # Create subfolder in which to place images
   firststr, laststr = '%03d' % first, '%03d' % last
-  dirname = galaxy + '_' + firststr + '_' + laststr + '_' + axes
+  if '/' in galaxy:
+    fgalaxy = galaxy.split('/')[-1]
+  else:
+    fgalaxy = galaxy
+  dirname = fgalaxy + '_' + firststr + '_' + laststr + '_' + axes
   print dirname
   import os
-  os.makedirs(dirname)
+  if not os.path.isdir(dirname):
+    os.makedirs(dirname)
 
   # Loop over snap range
   for snap in range(first, last+1):
@@ -64,7 +69,7 @@ def DiskRange(galaxy, first, last, rmax=50, axes='xy'):
     plt.gca().set_aspect('equal', adjustable='box')
 
     # Save figure
-    figname = dirname + '/' + galaxy + '_' + snapstr + '_' + 'disk' + '.png'
+    figname = dirname + '/' + fgalaxy + '_' + snapstr + '_' + 'disk' + '.png'
     plt.savefig(figname)
 
 
