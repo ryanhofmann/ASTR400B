@@ -1,0 +1,7 @@
+Ryan Hofmann
+ASTR 400B
+21 April 2016
+
+My objective is to analyze the evolution of the disks of the Milky Way and M31 throughout the merger. In particular, I am trying to determine how the shape and thickness of the disks evolve. The code that I have written thus far plots the disk of the specified galaxy in a rotated coordinate system, in which the z-axis is aligned with the angular momentum vector of the inner disk. This will allow me to visually analyze how the disks warp and thicken.
+
+The key part of this function is rotation of the coordinate system such that z || L. To do this, the code first reads in the file and transforms the coordinates to the center-of-mass frame. Then, the angular momentum is computed as the sum of angular momenta for each particle, here the cross product of position and velocity; the particles all have the same mass, so it can be ignored as it cancels out in the normalization. Then, using a rotation matrix defined in terms of the dot and cross products of z and L, the entire coordinate system is rotated so that z and L are aligned. The resulting array of positions can then be plotted such that the disk lies in the xy-plane.

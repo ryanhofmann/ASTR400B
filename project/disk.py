@@ -7,31 +7,21 @@ from functions import COM
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Define function for fitting plane to disk
-def DiskPlane(infile, axes='xy'):
+# Define function for rotating disk to angular momentum frame
+# Takes as inputs position and velocity arrays in COM frame
+def AngMomShift(pos, vel):
 
-  # Compute COM
-  time, com, vcom = COM(infile, 2, tol=0.5)
-
-  # Read in disk data
-  time, total, data = read(infile)
-  disk = data[np.where(data == 2)[0]]
-
-  # Shift to COM frame
-  pos = data[:, 2:5] - com
-  vel = data[:, 5:8] - vcom
-
-  # Select relevant region
-  lim = 40
+  # Select central region of disk
+  L_lim = 10
   r = np.sqrt(np.sum(np.square(pos), axis=1))
-  pos = pos[np.where(r < lim)]
-  vel = vel[np.where(r < lim)]
+  L_pos = pos[np.where(r < L_lim)[0]]
+  L_vel = vel[np.where(r < L_lim)[0]]
 
   # Compute direction of angular momentum vector
-  L = np.sum(np.cross(pos, vel), axis=0)
+  L = np.sum(np.cross(L_pos, L_vel), axis=0)
   L_norm = L/np.sqrt(np.sum(L**2))
 
-  # Set up rotation matrix to map norm to z unit vector (disk in xy-plane)
+  # Set up rotation matrix to map L_norm to z unit vector (disk in xy-plane)
   z_norm = np.array([0, 0, 1])
   v = np.cross(L_norm, z_norm)
   s = np.sqrt(np.sum(v**2))
@@ -41,10 +31,15 @@ def DiskPlane(infile, axes='xy'):
   R = I + v_x + np.dot(v_x, v_x)*(1 - c)/s**2
 
   # Rotate coordinate system
-  rot = []
-  for point in pos:
-    rot.append(np.dot(R, point))
-  pos = np.array(rot)
+  pos = np.dot(R, pos.T).T
+  vel = np.dot(R, vel.T).T
+
+  # Return rotated postion and velocity arrays
+  return pos, vel
+
+
+# Define function for plotting disk
+def DiskPlot(pos, axes='xy'):
 
   # Select axes
   if axes == 'xy':
@@ -71,7 +66,29 @@ if __name__ == '__main__':
 
   import sys
 
-  if len(sys.argv) == 2:
-    DiskPlane(sys.argv[1])
-  elif len(sys.argv) == 3:
-    DiskPlane(sys.argv[1], axes=sys.argv[2])
+  # Define arguments
+  infile = sys.argv[1]
+  if len(sys.argv) == 3:
+    axes = sys.argv[2]
+  else:
+    axes = 'xy'
+
+  # Read in data from file
+  time, total, data = read(infile)
+
+  # Compute COM and shift to COM frame
+  time, com, vcom = COM(infile, 3, tol=0.5)
+  pos = data[:, 2:5] - com
+  vel = data[:, 5:8] - vcom
+
+  # Select region for plotting
+  rmax = 50
+  r = np.sqrt(np.sum(np.square(pos), axis=1))
+  pos = pos[np.where(r < rmax)[0]]
+  vel = vel[np.where(r < rmax)[0]]
+
+  # Rotate coordinate system to angular momentum frame
+  pos, vel = AngMomShift(pos, vel)
+
+  # Plot disk in specified plane
+  DiskPlot(pos, axes)
