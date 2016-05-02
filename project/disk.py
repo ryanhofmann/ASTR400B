@@ -53,8 +53,9 @@ def DiskPlot(pos, axes='xy'):
     x2 = pos[:, 2]
 
   # Plot disk and plane
+  r = np.max(x1)
   from matplotlib.colors import LogNorm
-  plt.hist2d(x1, x2, bins=100, norm=LogNorm())
+  plt.hist2d(x1, x2, bins=100, range=[[-r, r], [-r, r]], norm=LogNorm())
   ax = plt.gca()
   ax.set_axis_bgcolor('black')
   plt.gca().set_aspect('equal', adjustable='box')
@@ -80,6 +81,11 @@ if __name__ == '__main__':
   time, com, vcom = COM(infile, 3, tol=0.5)
   pos = data[:, 2:5] - com
   vel = data[:, 5:8] - vcom
+
+  # Select only disk particles
+  ind = np.where(data == 2)[0]
+  pos = pos[ind]
+  vel = vel[ind]
 
   # Select region for plotting
   rmax = 50

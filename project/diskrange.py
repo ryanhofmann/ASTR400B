@@ -26,6 +26,7 @@ def DiskRange(galaxy, first, last, rmax=50, axes='xy'):
     os.makedirs(dirname)
 
   # Loop over snap range
+  i = 0
   for snap in range(first, last+1):
 
     # Construct file name
@@ -44,8 +45,8 @@ def DiskRange(galaxy, first, last, rmax=50, axes='xy'):
     # Select region for plotting
     rmax = 50
     r = np.sqrt(np.sum(np.square(pos), axis=1))
-    pos = pos[np.where(r < rmax)[0]]
-    vel = vel[np.where(r < rmax)[0]]
+    pos = pos[np.where(r < rmax and data == 2)[0]]
+    vel = vel[np.where(r < rmax and data == 3)[0]]
 
     # Rotate coordinate system to angular momentum frame
     pos, vel = AngMomShift(pos, vel)
@@ -63,14 +64,18 @@ def DiskRange(galaxy, first, last, rmax=50, axes='xy'):
 
     # Plot disk and plane
     from matplotlib.colors import LogNorm
-    plt.hist2d(x1, x2, bins=100, norm=LogNorm())
+    plt.hist2d(x1, x2, bins=100, range=[[-rmax, rmax], [-rmax, rmax]], norm=LogNorm())
     ax = plt.gca()
     ax.set_axis_bgcolor('black')
     plt.gca().set_aspect('equal', adjustable='box')
 
     # Save figure
-    figname = dirname + '/' + fgalaxy + '_' + snapstr + '_' + 'disk' + '.png'
+    frame = '%03d' % i
+    figname = dirname + '/' + fgalaxy + '_' + frame + '.png'
     plt.savefig(figname)
+
+    # Increment frame number
+    i += 1
 
 
 if __name__ == '__main__':
